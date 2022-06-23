@@ -299,19 +299,21 @@ class VideoController extends Controller
             //cut the video between start_time and end_time
             $command5=$command5.' -ss '.$data['start_time'].' -to '.$data['end_time'].' -filter_complex ';
             //Pad video
-            $command5=$command5.'"[0:v]pad=720:1280:(ow-iw)/2:(oh-ih)/2:black[padded]; ';
+            $command5=$command5.'" [0:v]subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].' [subtitles]';
+            $command5=$command5.'; [subtitles]pad=720:1280:(ow-iw)/2:(oh-ih)/2:black[padded]; ';
             //Overlay the image 
-            $command5=$command5.'[padded][1:v] overlay=(W-w)/2:900 ,';
+            $command5=$command5.'[padded][1:v] overlay=(W-w)/2:900 [image],';
             //add title part1 (Max the letters are 18)
-            $command5=$command5.'drawtext=text='.strtoupper($data['title1']).': x=(w-text_w)/2:y=(h-text_h)/10 :  fontfile=OpenSans-Regular.ttf: fontcolor=white: fontsize=60, ';
+            $command5=$command5.'[image]drawtext=text='.strtoupper($data['title1']).': x=(w-text_w)/2:y=(h-text_h)/10 :  fontfile=OpenSans-Regular.ttf: fontcolor=white: fontsize=60 [title1], ';
             //Add title Part 2 (Max the letters are 18)
-            $command5=$command5.'drawtext=text='.strtoupper($data['title2']).': x=(w-text_w)/2:y=(((h-text_h)/10)+80) :  fontfile=OpenSans-Regular.ttf: fontcolor=white: fontsize=60, ';
+            $command5=$command5.'[title1] drawtext=text='.strtoupper($data['title2']).': x=(w-text_w)/2:y=(((h-text_h)/10)+80) :  fontfile=OpenSans-Regular.ttf: fontcolor=white: fontsize=60 [title2], ';
             //Add Title Part 3 (Max the letters are 18)
-            $command5=$command5.'drawtext=text='.strtoupper($data['title3']).': x=(w-text_w)/2:y=(((h-text_h)/10)+160) :  fontfile=OpenSans-Regular.ttf: fontcolor=white: fontsize=60, '; 
+            $command5=$command5.'[title2] drawtext=text='.strtoupper($data['title3']).': x=(w-text_w)/2:y=(((h-text_h)/10)+160) :  fontfile=OpenSans-Regular.ttf: fontcolor=white: fontsize=60 [title3], '; 
             //Add sesson and episode number
-            $command5=$command5.'drawtext=text='.$data['episode'].$split.': x=(w-text_w)/2:y=1060 :  fontfile=OpenSans-Regular.ttf: fontcolor=violet: fontsize=35, ';
+            $command5=$command5.'[title3] drawtext=text='.$data['episode'].$split.': x=(w-text_w)/2:y=1060 :  fontfile=OpenSans-Regular.ttf: fontcolor=violet: fontsize=35 [out]" ';
             //Add subtitles
-            $command5=$command5.'subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].':force_style='."'Alignment=5, Fontsize=4'".' [out]" ';
+            //$command5=$command5.'subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].':force_style='."'Alignment=10,,MarginL=5,MarginV=50,Fontsize=4'".' [out]" ';
+            //$command5=$command5.'[episode] subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].' [subtitle] ,[subtitle][1:v] overlay=x=20:y=200 [out]" ';
             //Save the new video on out file
             $command5=$command5.'-map "[out]" -map 0:a  /usr/share/laravel-apps/cut-images2/storage/app/'.'Palpito-'.$split.'-'.$data['episode'].'.mp4';
 
