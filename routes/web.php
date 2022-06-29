@@ -19,3 +19,10 @@ Route::get('/', [VideoController::class, 'view']);
 Route::get('/overlay', [VideoController::class, 'overlay']);
 Route::get('/cded', [VideoController::class, 'cded']);
 Route::get('/palpito', [VideoController::class, 'palpito']);
+Route::get('/cded2', [VideoController::class, 'cded2']);
+Route::get('/cded3', [VideoController::class, 'cded3']);
+Route::get('/test', [VideoController::class, 'test']);
+Route::get('/palpito2', [VideoController::class, 'palpito2']);
+Route::get('/lqclm', [VideoController::class, 'lqclm']);
+
+
