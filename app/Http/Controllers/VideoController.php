@@ -589,14 +589,23 @@ class VideoController extends Controller
         //El titilo no puede llevar tildes y debe ser cada parte menor a 18 letras incluidos los espacios
         $video_splits=array
         (           
-            "P1"	=>	array(	"start_time"	=>	'00:00:00'	,	"end_time"	=>	'00:00:55'	,"title1"	=>	'Emma trabaja de'	,"title2"	=>	'dama de compañía'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
+            /*"P1"	=>	array(	"start_time"	=>	'00:00:00'	,	"end_time"	=>	'00:00:55'	,"title1"	=>	'Emma trabaja de'	,"title2"	=>	'dama de compañía'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
             "P2"	=>	array(	"start_time"	=>	'00:02:00'	,	"end_time"	=>	'00:02:42'	,"title1"	=>	'Sergio esta a punto'	,"title2"	=>	'de quedar en la quiebra'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
             "P3"	=>	array(	"start_time"	=>	'00:03:08'	,	"end_time"	=>	'00:04:02'	,"title1"	=>	'Tony le propone'	,"title2"	=>	'matrimonio a Emma'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
-            "P4"	=>	array(	"start_time"	=>	'00:04:41'	,	"end_time"	=>	'00:05:48'	,"title1"	=>	'Vicente llega a'	,"title2"	=>	'la cena de navidad'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
-            "P5"	=>	array(	"start_time"	=>	'00:06:44'	,	"end_time"	=>	'00:07:59'	,"title1"	=>	'Sergio presiona a Vicente'	,"title2"	=>	'para firmar la sociedad'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
+            */"P4"	=>	array(	"start_time"	=>	'00:04:41'	,	"end_time"	=>	'00:05:48'	,"title1"	=>	'Vicente llega a'	,"title2"	=>	'la cena de navidad'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
+            /*"P5"	=>	array(	"start_time"	=>	'00:06:44'	,	"end_time"	=>	'00:07:59'	,"title1"	=>	'Sergio presiona a Vicente'	,"title2"	=>	'para firmar la sociedad'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
             "P6"	=>	array(	"start_time"	=>	'00:08:00'	,	"end_time"	=>	'00:09:00'	,"title1"	=>	'Emma y Vicente tienen'	,"title2"	=>	'un sorpresivo encuentro'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
             "P7"	=>	array(	"start_time"	=>	'00:09:05'	,	"end_time"	=>	'00:09:56'	,"title1"	=>	'Sergio le confiesa a Emma'	,"title2"	=>	'que esta en problemas'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
-        );
+            "P8"	=>	array(	"start_time"	=>	'00:09:58'	,	"end_time"	=>	'00:11:00'	,"title1"	=>	'A vicente le hacen pasar'	,"title2"	=>	'un mal rato en la cena'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
+            "P9"	=>	array(	"start_time"	=>	'00:13:19'	,	"end_time"	=>	'00:14:32'	,"title1"	=>	'Vicente se coloca '	,"title2"	=>	'imprudente con Emma'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
+            "P10"	=>	array(	"start_time"	=>	'00:15:08'	,	"end_time"	=>	'00:16:32'	,"title1"	=>	'Emma y su hermana'	,"title2"	=>	'Nora son rivales'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
+            "P11"	=>	array(	"start_time"	=>	'00:17:10'	,	"end_time"	=>	'00:17:59'	,"title1"	=>	'Javier se mete en'	,"title2"	=>	'la vida de Emma'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
+            "P12"	=>	array(	"start_time"	=>	'00:18:00'	,	"end_time"	=>	'00:19:16'	,"title1"	=>	'Javier chantajea a'	,"title2"	=>	'a Emma y la agrede'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
+            "P13"	=>	array(	"start_time"	=>	'00:19:17'	,	"end_time"	=>	'00:20:21'	,"title1"	=>	'Nora descubre la'	,"title2"	=>	'doble vida de Emma'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
+            "P14"	=>	array(	"start_time"	=>	'00:20:22'	,	"end_time"	=>	'00:21:27'	,"title1"	=>	'Emma le dice a Nora'	,"title2"	=>	'que David la intento violar'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
+            "P15"	=>	array(	"start_time"	=>	'00:21:28'	,	"end_time"	=>	'00:22:22'	,"title1"	=>	'Nora le quiere contar toda'	,"title2"	=>	'la verdad de Emma a su mama'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
+            "P16"	=>	array(	"start_time"	=>	'00:22:26'	,	"end_time"	=>	'00:23:48'	,"title1"	=>	'Tony esta demasiado borracho'	,"title2"	=>	'y hace el ridiculo'	,"title3"	=>	'Doble Vida'	,"file"	=>	'180-Doble_Vida_Lo_Que_Callamos_Las_Mujeres.mp4'	,"episode"	=>	'T1CA3'	,"banner"	=>	'lqclmlogo.jpg'	,"subtitles"	=>	'4_Spanish.srt'	,),
+        */);
          foreach($video_splits as $split=>$data)
         {   
             //remove preview video
@@ -605,7 +614,7 @@ class VideoController extends Controller
             //Include video and image 
             $command5='ffmpeg   -i /usr/share/laravel-apps/cut-images2/storage/app/'.$data['file'].' -i /usr/share/laravel-apps/cut-images2/storage/app/'.$data['banner'];
             //cut the video between start_time and end_time -crf 9 (0-51) Calidad
-            $command5=$command5.' -ss '.$data['start_time'].' -to '.$data['end_time'].' -crf 9 -preset veryfast -filter_complex ';
+            $command5=$command5.' -ss '.$data['start_time'].' -to '.$data['end_time'].' -crf 9  -filter_complex ';
             //Pad video
             //$command5=$command5.'" [0:v]subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].' [subtitles]';
             //$command5=$command5.'; [subtitles]pad=720:1280:(ow-iw)/2:(oh-ih)/2:black[padded]; ';
@@ -619,9 +628,9 @@ class VideoController extends Controller
             //Add Title Part 3 (Max the letters are 18)
             $command5=$command5.'[title2] drawtext=text='.strtoupper($data['title3']).' - '.$split.': x=(w-text_w)/2:y=200 :  fontfile=OpenSans-Bold.ttf: fontcolor=white: fontsize=35 [title3], '; 
             //Add sesson and episode number
-            $command5=$command5.'[title3] drawtext=text='.' '.': x=(w-text_w)/2:y=1170 :  fontfile=OpenSans-Regular.ttf: fontcolor=violet: fontsize=35 [title], ';
+            $command5=$command5.'[title3] drawtext=text='.' '.': x=(w-text_w)/2:y=1170 :  fontfile=OpenSans-Regular.ttf: fontcolor=violet: fontsize=35 [out]", ';
             //Scale the video
-            $command5=$command5.'[title] scale=352:640 [out]" ';
+            //$command5=$command5.'[title] scale=352:640 [out]" ';
             //$command5=$command5.'subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].':force_style='."'Alignment=10,,MarginL=5,MarginV=50,Fontsize=4'".' [out]" ';
             //$command5=$command5.'[episode] subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].' [subtitle] ,[subtitle][1:v] overlay=x=20:y=200 [out]" ';
             //Save the new video on out file
