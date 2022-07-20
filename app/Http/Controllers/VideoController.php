@@ -8,126 +8,19 @@ use DateTime;
 use SplTempFileObject;
 use Image;
 use Symfony\Component\Process\Process;
+use App\Models\Episode;
+use App\Models\Season;
+use App\Models\Tvshow;
 
 class VideoController extends Controller
 {
     public function view(){
-        //$path_file=base_path().'/storage/videos/Guadalupe.mp4';
-        $video_splits=array
-        (           
-            /*"P1"	=>	array(	"start_time"	=>	5	,	"end_time"	=>	80	,	"name"	=>	"Un huésped dentro de mi cuerpo"	,),
-            "P2"	=>	array(	"start_time"	=>	313	,	"end_time"	=>	363	,	"name"	=>	"Un huésped dentro de mi cuerpo"	,),
-            "P3"	=>	array(	"start_time"	=>	449	,	"end_time"	=>	533	,	"name"	=>	"Un huésped dentro de mi cuerpo"	,),
-            "P4"	=>	array(	"start_time"	=>	534	,	"end_time"	=>	568	,	"name"	=>	"Un huésped dentro de mi cuerpo"	,),
-            "P5"	=>	array(	"start_time"	=>	577	,	"end_time"	=>	655	,	"name"	=>	"Un huésped dentro de mi cuerpo"	,),
-            "P6"	=>	array(	"start_time"	=>	691	,	"end_time"	=>	746	,	"name"	=>	"Un huésped dentro de mi cuerpo"	,),
-            "P7"	=>	array(	"start_time"	=>	749	,	"end_time"	=>	795	,	"name"	=>	"Un huésped dentro de mi cuerpo"	,),
-            "P8"	=>	array(	"start_time"	=>	847	,	"end_time"	=>	926	,	"name"	=>	"Un huésped dentro de mi cuerpo"	,),
-            "P9"	=>	array(	"start_time"	=>	935	,	"end_time"	=>	985	,	"name"	=>	"Un huésped dentro de mi cuerpo"	,),*/
-            "P10"	=>	array(	"start_time"	=>	987	,	"end_time"	=>	1029	,	"name"	=>	"Un huésped dentro de mi cuerpo"	,),
-            "P11"	=>	array(	"start_time"	=>	1049	,	"end_time"	=>	1089	,	"name"	=>	"Un huésped dentro de mi cuerpo"	,),/*
-            "P12"	=>	array(	"start_time"	=>	2050	,	"end_time"	=>	2134	,	"name"	=>	"Un huésped dentro de mi cuerpo",	),
-            "P13"	=>	array(	"start_time"	=>	2155	,	"end_time"	=>	2208	,	"name"	=>	"Un huésped dentro de mi cuerpo",	),
-            "P14"	=>	array(	"start_time"	=>	2286	,	"end_time"	=>	2330	,	"name"	=>	"Un huésped dentro de mi cuerpo",	),
-            "P15"	=>	array(	"start_time"	=>	1909	,	"end_time"	=>	1961	,	"name"	=>	"Un huésped dentro de mi cuerpo",	),
-            "P16"	=>	array(	"start_time"	=>	2011	,	"end_time"	=>	2074	,	"name"	=>	"Un huésped dentro de mi cuerpo",	),
-            "P17"	=>	array(	"start_time"	=>	2101	,	"end_time"	=>	2163	,	"name"	=>	"Un huésped dentro de mi cuerpo",	),
-            "P18"	=>	array(	"start_time"	=>	2164	,	"end_time"	=>	2264	,	"name"	=>	"Un huésped dentro de mi cuerpo",	),
-            "P19"	=>	array(	"start_time"	=>	2363	,	"end_time"	=>	2410	,	"name"	=>	"Un huésped dentro de mi cuerpo",	),
-            "P20"	=>	array(	"start_time"	=>	2481	,	"end_time"	=>	2539	,	"name"	=>	"Un huésped dentro de mi cuerpo",	),*/
-        
-        
-        );
-            
-       /* $video_splits=array
-        (    
-            
-        "P1" => array
-            (
-            "start_time"=>0,
-            "end_time"=>10,
-            ),
-        "P2" => array
-            (
-            "start_time"=>263,
-            "end_time"=>312,
-            ),
-        "P3" => array
-            (
-            "start_time"=>344,
-            "end_time"=>382,
-            ),
-        "P4" => array
-            (
-            "start_time"=>470,
-            "end_time"=>483,
-            ),
-        "P5" => array
-            (
-            "start_time"=>659,
-            "end_time"=>695,
-            ),
-        "P6" => array
-            (
-            "start_time"=>705,
-            "end_time"=>764,
-            ),
-        "P7" => array
-            (
-            "start_time"=>825,
-            "end_time"=>863,
-            ),
-        "P10" => array
-            (
-            "start_time"=>1167,
-            "end_time"=>1246,
-            ),
-        "P11" => array
-            (
-            "start_time"=>1405,
-            "end_time"=>1472,
-            ),
-        "PRUEBA" => array
-            (
-            "start_time"=>180,
-            "end_time"=>200,
-            ),
-        );*/
-        
-        foreach($video_splits as $split=>$time)
-        {
-            //dd($split);
-            //dd($time['start_time'],$time['end_time'],$time['name'],$split);
-            FFMpeg::open('Palpito.S01E02.SPANISH.WEBRip.x264-ION10[eztv.re].mp4')
-            ->export()
-            ->inFormat(new \FFMpeg\Format\Video\X264)
-            ->addFilter('-ss', \FFMpeg\Coordinate\TimeCode::fromSeconds($time['start_time']))
-            ->addFilter('-to', \FFMpeg\Coordinate\TimeCode::fromSeconds($time['end_time']))
-            ->save('Palpito '.$split.'-'.$time['name'].'E2T1.mp4');  
-
-
-    
-            //dd($command5);
-            system('rm /usr/share/laravel-apps/cut-images2/storage/app/pruebaImage.mp4');
-            //dd($command1);
-            system($command5);
-
-        }     
-
-/*
-        foreach($video_splits as $split=>$time)
-        {
-            //dd($split);
-            FFMpeg::open('COMO_DICE_EL_DICHO_T4_E61_EN_BOCA_DEL_MENTIROSO_HASTA_LO_CIERTO.mp4')
-            ->export()
-            ->inFormat(new \FFMpeg\Format\Video\X264)
-            ->addFilter('-ss', \FFMpeg\Coordinate\TimeCode::fromSeconds($time['start_time']))
-            ->addFilter('-to', \FFMpeg\Coordinate\TimeCode::fromSeconds($time['end_time']))
-            ->save('COMO_DICE_EL_DICHO - '.$split.'E61T4.mp4'); 
-            ->save('CDED '.$split.'E1' );            
-            
-        }*/
-        return view('welcome');
+        $tvshows= Tvshow::all();
+        //$episode=$episode->find(1);
+        //$episodes->load('seasons');
+        //dd($episode->seasons->load('tvshows'));
+        //dd($episode);
+        return view('menu',compact('tvshows'));
     }
 
     public function overlay(){
@@ -304,9 +197,9 @@ class VideoController extends Controller
             //cut the video between start_time and end_time -crf 9 (0-51) Calidad
             $command5=$command5.' -ss '.$data['start_time'].' -to '.$data['end_time'].' -crf 9 -preset veryfast -filter_complex ';
             //Pad video
-            //$command5=$command5.'" [0:v]subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].' [subtitles]';
+            $command5=$command5.'" [0:v]subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].' [subtitles]';
             //$command5=$command5.'; [subtitles]pad=720:1280:(ow-iw)/2:(oh-ih)/2:black[padded]; ';
-            $command5=$command5.'"[0:v]pad=720:1280:(ow-iw)/2:(oh-ih)/2:black[padded]; ';     
+            $command5=$command5.';[subtitles]pad=720:1280:(ow-iw)/2:(oh-ih)/2:black[padded]; ';     
             //Overlay the image 
             $command5=$command5.'[padded][1:v] overlay=(W-w)/2:900 [image],';
             //add title part1 (Max the letters are 18)
@@ -645,5 +538,139 @@ class VideoController extends Controller
         return view('welcome');
     }
 
-    
+
+    public function cded_sub(){
+        //El titulo no puede llevar tildes y debe ser cada parte menor a 18 letras incluidos los espacios
+        $video_splits=array
+        (           
+            "P1"	=>	array(	"start_time"	=>	'00:02:05'	,	"end_time"	=>	'00:03:07'	,"title1"	=>	'TIENE ROPA NUEVA'	,"title2"	=>	'PERO ROBANDOLE A OTROS'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P2"	=>	array(	"start_time"	=>	'00:04:15'	,	"end_time"	=>	'00:05:15'	,"title1"	=>	'GONZALO ODIA VIVIR'	,"title2"	=>	'DE LA CARIDAD'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P3"	=>	array(	"start_time"	=>	'00:09:03'	,	"end_time"	=>	'00:10:13'	,"title1"	=>	'LE ROBAN LA LIQUIDACION'	,"title2"	=>	'A SU PAPÁ'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P4"	=>	array(	"start_time"	=>	'00:10:54'	,	"end_time"	=>	'00:11:56'	,"title1"	=>	'SUS AMIGOS LADRONES'	,"title2"	=>	'YA TIENEN COCHE'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P5"	=>	array(	"start_time"	=>	'00:13:13'	,	"end_time"	=>	'00:14:13'	,"title1"	=>	'GONZALOR VA POR'	,"title2"	=>	'MUY MAL CAMINO'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P6"	=>	array(	"start_time"	=>	'00:14:28'	,	"end_time"	=>	'00:16:10'	,"title1"	=>	'RECIBE  EL DINERO ROBADO'	,"title2"	=>	'DINERO SUCIO'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P7"	=>	array(	"start_time"	=>	'00:16:06'	,	"end_time"	=>	'00:17:12'	,"title1"	=>	'GONZALO DIEFIENDE A SUS'	,"title2"	=>	'AMIGOS LADRONES'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P8"	=>	array(	"start_time"	=>	'00:17:55'	,	"end_time"	=>	'00:19:03'	,"title1"	=>	'ELDESESPERO HACE QUE GONZO'	,"title2"	=>	'TOME MALAS DECISIONES'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P9"	=>	array(	"start_time"	=>	'00:19:39'	,	"end_time"	=>	'00:20:43'	,"title1"	=>	'GONZALO NO QUIERE'	,"title2"	=>	'DEBERLE NADA A NADIE'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P10"	=>	array(	"start_time"	=>	'00:21:38'	,	"end_time"	=>	'00:22:40'	,"title1"	=>	'GONZALO DICE QUE VA ROBAR'	,"title2"	=>	'SOLO POR UN RATO'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P11"	=>	array(	"start_time"	=>	'00:22:48'	,	"end_time"	=>	'00:23:30'	,"title1"	=>	'GONZALO HACE SU PRIMER ROBO'	,"title2"	=>	'Y LE GUSTA LA PLATA'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P12"	=>	array(	"start_time"	=>	'00:24:45'	,	"end_time"	=>	'00:25:45'	,"title1"	=>	'LOS REGALOS FINOS A SU'	,"title2"	=>	'MADRE LO DELATAN'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P13"	=>	array(	"start_time"	=>	'00:26:37'	,	"end_time"	=>	'00:27:45'	,"title1"	=>	'EL PADRE DE GONZO AVERIGUA'	,"title2"	=>	'SI ES VERDAD LO DEL ASCENSO'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P14"	=>	array(	"start_time"	=>	'00:27:54'	,	"end_time"	=>	'00:28:56'	,"title1"	=>	'LE GRITA A SU PADRE QUE'	,"title2"	=>	'SI, QUE SI ESTA ROBANDO'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P15"	=>	array(	"start_time"	=>	'00:30:45'	,	"end_time"	=>	'00:31:47'	,"title1"	=>	'GONZO ROBA A SU PROPIA TIA,'	,"title2"	=>	'Y ELLA LO RECONOCE'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P16"	=>	array(	"start_time"	=>	'00:31:50'	,	"end_time"	=>	'00:32:51'	,"title1"	=>	'SUFAMILIA SQABE QUE ES LADRON'	,"title2"	=>	'MENOS SU MADRE'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P17"	=>	array(	"start_time"	=>	'00:33:02'	,	"end_time"	=>	'00:34:02'	,"title1"	=>	'SU MADRE SE ENTERA DE'	,"title2"	=>	'LO QUE HACE SU HIJO Y ENFERMA'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P18"	=>	array(	"start_time"	=>	'00:34:56'	,	"end_time"	=>	'00:35:59'	,"title1"	=>	'LO DEJAN SALIRSE PERO TIENE'	,"title2"	=>	'QUE HACER EL ULTIMO ROBO'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P19"	=>	array(	"start_time"	=>	'00:36:50'	,	"end_time"	=>	'00:37:52'	,"title1"	=>	'POR SU CULPA SU MADRE'	,"title2"	=>	'ESTA HOSPITALIZADA'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P20"	=>	array(	"start_time"	=>	'00:38:42'	,	"end_time"	=>	'00:39:46'	,"title1"	=>	'GONZALO DISPARO  POR'	,"title2"	=>	'DEFENDER A  MARIETA'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P21"	=>	array(	"start_time"	=>	'00:39:47'	,	"end_time"	=>	'00:41:09'	,"title1"	=>	'SU PADRE LO DENUNCIA'	,"title2"	=>	'Y SU MADRE FALLECE'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+            "P22"	=>	array(	"start_time"	=>	'00:41:14'	,	"end_time"	=>	'00:42:14'	,"title1"	=>	'DIME CON QUIEN ANDAS'	,"title2"	=>	'Y TE DIRE QUIEN ESRES'	,"title3"	=>	'DIME CON QUIEN ANDAS Y TE DIRE QUIEN ERES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.mp4'	,"episode"	=>	'T0517'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E17_DIME_CON_QUIEN_ANDAS_Y_TE_DIRE_QUIEN_ERES.srt'	,),
+        );
+
+        foreach($video_splits as $split=>$data)
+        {   
+            //remove preview video
+            system('rm  /usr/share/laravel-apps/cut-images2/storage/app/'.'cded-'.$split.'-'.$data['episode'].'.mp4');
+            
+            //Include video and image 
+            $command5='ffmpeg   -i /usr/share/laravel-apps/cut-images2/storage/app/'.$data['file'].' -i /usr/share/laravel-apps/cut-images2/storage/app/'.$data['banner'] ;
+            //cut the video between start_time and end_time -crf 9 (0-51) Calidad
+            $command5=$command5.' -ss '.$data['start_time'].' -to '.$data['end_time'].' -r 25 -ar 44100 -metadata title=  -filter_complex ';
+            //Pad video
+            $command5=$command5.'" [0:v]subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].':force_style='."'Alignment=2,,MarginL=5,MarginV=50,Fontsize=12'".' [subtitles],';
+            //$command5=$command5.'; [subtitles]pad=720:1280:(ow-iw)/2:(oh-ih)/2:black[padded]; ';
+            $command5=$command5.'[subtitles]crop=720:720,pad=720:1280:(ow-iw)/2:(oh-ih)/2:black[padded];';     
+            //Overlay the image 
+            $command5=$command5.'[padded][1:v] overlay=(W-w)/2:1000 [image],';
+            //add title part1 (Max the letters are 18)
+            $command5=$command5."[image]drawtext=text='".strtoupper($data['title1'])."': x=(w-text_w)/2:y=70 :  fontfile=OpenSans-Bold.ttf: fontcolor=white: fontsize=38 [title1], ";
+            //Add title Part 2 (Max the letters are 18)
+            $command5=$command5."[title1] drawtext=text='".strtoupper($data['title2'])."': x=(w-text_w)/2:y=120 :  fontfile=OpenSans-Bold.ttf: fontcolor=white: fontsize=38 [title2], ";
+            //Add Title Part 3 (Max the letters are 18)
+            $command5=$command5."[title2] drawtext=text='".strtoupper($data['title3'])."' - ".$split.": x=(w-text_w)/2:y=200 :  fontfile=OpenSans-Bold.ttf: fontcolor=white: fontsize=20 [title3], "; 
+            //Add sesson and episode number
+            $command5=$command5.'[title3] drawtext=text='.' '.': x=(w-text_w)/2:y=1200 :  fontfile=OpenSans-Regular.ttf: fontcolor=violet: fontsize=10 [out]" ';
+            //Scale the video
+            //$command5=$command5.'[title] scale=352:640 [out]" '; //,
+            //$command5=$command5.'subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].':force_style='."'Alignment=10,,MarginL=5,MarginV=50,Fontsize=4'".' [out]" ';
+            //$command5=$command5.'[episode] subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].' [subtitle] ,[subtitle][1:v] overlay=x=20:y=200 [out]" ';
+            //Save the new video on out file
+            $command5=$command5.'-map "[out]" -map 0:a   /usr/share/laravel-apps/cut-images2/storage/app/'.'cded-'.$split.'-'.$data['episode'].'.mp4';
+
+            //dd($command5);
+            system($command5);
+
+        }     
+
+        return view('welcome');
+    }
+
+
+    public function lqclm_sub(){
+        //El titilo no puede llevar tildes y debe ser cada parte menor a 18 letras incluidos los espacios
+        $video_splits=array
+        (           
+            /*"P1"	=>	array(	"start_time"	=>	'00:01:26'	,	"end_time"	=>	'00:02:40'	,"title1"	=>	'ivone quiere safarse de'	,"title2"	=>	'su hija   '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            */"P2"	=>	array(	"start_time"	=>	'00:02:41'	,	"end_time"	=>	'00:03:53'	,"title1"	=>	'todo queda en familia'	,"title2"	=>	'    '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            /*"P3"	=>	array(	"start_time"	=>	'00:03:54'	,	"end_time"	=>	'00:05:09'	,"title1"	=>	'A ivone se le'	,"title2"	=>	'dañan los planes  '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P4"	=>	array(	"start_time"	=>	'00:05:10'	,	"end_time"	=>	'00:06:27'	,"title1"	=>	'El arquitecto de paisajes'	,"title2"	=>	'    '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P5"	=>	array(	"start_time"	=>	'00:06:54'	,	"end_time"	=>	'00:08:12'	,"title1"	=>	'Julia sufre por un'	,"title2"	=>	'dolor inexplicable   '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P6"	=>	array(	"start_time"	=>	'00:08:14'	,	"end_time"	=>	'00:09:32'	,"title1"	=>	'Soy el lobo feroz'	,"title2"	=>	'    '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P7"	=>	array(	"start_time"	=>	'00:10:34'	,	"end_time"	=>	'00:11:44'	,"title1"	=>	'Julia no sabe que'	,"title2"	=>	'le esta pasando  '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P8"	=>	array(	"start_time"	=>	'00:14:09'	,	"end_time"	=>	'00:15:42'	,"title1"	=>	'la maldición de la'	,"title2"	=>	'bruja    '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P9"	=>	array(	"start_time"	=>	'00:15:49'	,	"end_time"	=>	'00:17:20'	,"title1"	=>	'Julia se hace mujer'	,"title2"	=>	'    '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P10"	=>	array(	"start_time"	=>	'00:17:21'	,	"end_time"	=>	'00:18:32'	,"title1"	=>	'Nada puede ser peor'	,"title2"	=>	'que la primera vez '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P11"	=>	array(	"start_time"	=>	'00:18:40'	,	"end_time"	=>	'00:20:15'	,"title1"	=>	'ivone se pasa de'	,"title2"	=>	'mala madre   '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P12"	=>	array(	"start_time"	=>	'00:20:16'	,	"end_time"	=>	'00:21:25'	,"title1"	=>	'el señor perfecto '	,"title2"	=>	'    '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P13"	=>	array(	"start_time"	=>	'00:23:25'	,	"end_time"	=>	'00:24:24'	,"title1"	=>	'Benito no seas tarado'	,"title2"	=>	'    '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P14"	=>	array(	"start_time"	=>	'00:25:35'	,	"end_time"	=>	'00:26:50'	,"title1"	=>	'a cada cual le'	,"title2"	=>	'llega su hora  '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P15"	=>	array(	"start_time"	=>	'00:26:51'	,	"end_time"	=>	'00:27:50'	,"title1"	=>	'Noche de luna llena'	,"title2"	=>	'    '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P16"	=>	array(	"start_time"	=>	'00:27:54'	,	"end_time"	=>	'00:28:58'	,"title1"	=>	'Baño de sangre '	,"title2"	=>	'    '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P17"	=>	array(	"start_time"	=>	'00:29:16'	,	"end_time"	=>	'00:30:19'	,"title1"	=>	'Ramon es un amargado'	,"title2"	=>	'    '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P18"	=>	array(	"start_time"	=>	'00:31:01'	,	"end_time"	=>	'00:32:03'	,"title1"	=>	'benito desaparece  '	,"title2"	=>	'    '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P19"	=>	array(	"start_time"	=>	'00:32:04'	,	"end_time"	=>	'00:33:00'	,"title1"	=>	'a Beto le sale el'	,"title2"	=>	'loco que lleva dentro '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P20"	=>	array(	"start_time"	=>	'00:33:01'	,	"end_time"	=>	'00:34:25'	,"title1"	=>	'Ramon le hace una'	,"title2"	=>	'loca propuesta a ivone '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P21"	=>	array(	"start_time"	=>	'00:34:39'	,	"end_time"	=>	'00:35:59'	,"title1"	=>	'una película de terror'	,"title2"	=>	'    '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+            "P22"	=>	array(	"start_time"	=>	'00:37:56'	,	"end_time"	=>	'00:39:32'	,"title1"	=>	'se cumple el sueño'	,"title2"	=>	'de clara y julia '	,"title3"	=>	'SI TE PROTEGE LA LUNA NO TE PREOCUPES'	,"file"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.mp4'	,"episode"	=>	'T0513'	,"banner"	=>	'comodiceeldicho320.jpg'	,"subtitles"	=>	'COMO_DICE_EL_DICHO_T5_E13_SI_TE_PROTEGE_LA_LUNA_NO_TE_PREOCUPES.srt'	,),
+        */);
+         foreach($video_splits as $split=>$data)
+        {   
+            //remove preview video
+            system('rm  /usr/share/laravel-apps/cut-images2/storage/app/'.'lqclm-'.$split.'-'.$data['episode'].'.mp4');
+            
+            //Include video and image 
+            $command5='ffmpeg   -i /usr/share/laravel-apps/cut-images2/storage/app/'.$data['file'].' -i /usr/share/laravel-apps/cut-images2/storage/app/'.$data['banner'];
+            //cut the video between start_time and end_time -crf 9 (0-51) Calidad
+            $command5=$command5.' -ss '.$data['start_time'].' -to '.$data['end_time'].' -r 25 -ar 44100 -metadata title=  -filter_complex ';
+            //Pad video
+            $command5=$command5.'" [0:v]subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].':force_style='."'Alignment=2,,MarginL=5,MarginV=50,Fontsize=12'".' [subtitles],';
+            //$command5=$command5.'; [subtitles]pad=720:1280:(ow-iw)/2:(oh-ih)/2:black[padded]; ';
+            $command5=$command5.'[subtitles]crop=720:720,pad=720:1280:(ow-iw)/2:(oh-ih)/2:black[padded];';     
+            //Overlay the image   
+            //Overlay the image 
+            $command5=$command5.'[padded][1:v] overlay=(W-w)/2:1000 [image],';
+            //add title part1 (Max the letters are 18)
+            $command5=$command5."[image]drawtext=text='".strtoupper($data['title1'])."': x=(w-text_w)/2:y=70 :  fontfile=OpenSans-Bold.ttf: fontcolor=white: fontsize=38 [title1], ";
+            //Add title Part 2 (Max the letters are 18)
+            $command5=$command5."[title1] drawtext=text='".strtoupper($data['title2'])."': x=(w-text_w)/2:y=120 :  fontfile=OpenSans-Bold.ttf: fontcolor=white: fontsize=38 [title2], ";
+            //Add Title Part 3 (Max the letters are 18)
+            $command5=$command5."[title2] drawtext=text='".strtoupper($data['title3'])."' - ".$split.": x=(w-text_w)/2:y=200 :  fontfile=OpenSans-Bold.ttf: fontcolor=white: fontsize=20 [title3], "; 
+            //Add sesson and episode number
+            $command5=$command5.'[title3] drawtext=text='.' '.': x=(w-text_w)/2:y=1200 :  fontfile=OpenSans-Regular.ttf: fontcolor=violet: fontsize=10 [out]" ';
+            //Scale the video
+            //$command5=$command5.'[title] scale=352:640 [out]" '; //,
+            //$command5=$command5.'subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].':force_style='."'Alignment=10,,MarginL=5,MarginV=50,Fontsize=4'".' [out]" ';
+            //$command5=$command5.'[episode] subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].' [subtitle] ,[subtitle][1:v] overlay=x=20:y=200 [out]" ';
+            //Save the new video on out file
+            $command5=$command5.'-map "[out]" -map 0:a   /usr/share/laravel-apps/cut-images2/storage/app/'.'lqclm-'.$split.'-'.$data['episode'].'.mp4';
+
+            //dd($command5);
+            system($command5);
+
+        }     
+
+        return view('welcome');
+    }
+
+
 }

@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\VideoController;
+use App\Http\Controllers\PartsController;
+ 
 
 /*
 |--------------------------------------------------------------------------
@@ -24,5 +26,10 @@ Route::get('/cded3', [VideoController::class, 'cded3']);
 Route::get('/test', [VideoController::class, 'test']);
 Route::get('/palpito2', [VideoController::class, 'palpito2']);
 Route::get('/lqclm', [VideoController::class, 'lqclm']);
+Route::get('/cded_sub', [VideoController::class, 'cded_sub']);
+Route::get('/lqclm_sub', [VideoController::class, 'lqclm_sub']);
+
+
+
 
 
