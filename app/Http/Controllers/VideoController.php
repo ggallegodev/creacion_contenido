@@ -650,11 +650,11 @@ class VideoController extends Controller
             //Overlay the image 
             $command5=$command5.'[padded][1:v] overlay=(W-w)/2:1000 [image],';
             //add title part1 (Max the letters are 18)
-            $command5=$command5."[image]drawtext=text='".strtoupper($data['title1'])."': x=(w-text_w)/2:y=70 :  fontfile=OpenSans-Bold.ttf: fontcolor=white: fontsize=38 [title1], ";
+            $command5=$command5."[image]drawtext=text='".strtoupper($data['title1'])."': x=(w-text_w)/2:y=120 :  fontfile=OpenSans-Bold.ttf: fontcolor=white: fontsize=38 [title1], ";
             //Add title Part 2 (Max the letters are 18)
-            $command5=$command5."[title1] drawtext=text='".strtoupper($data['title2'])."': x=(w-text_w)/2:y=120 :  fontfile=OpenSans-Bold.ttf: fontcolor=white: fontsize=38 [title2], ";
+            $command5=$command5."[title1] drawtext=text='".strtoupper($data['title2'])."': x=(w-text_w)/2:y=200 :  fontfile=OpenSans-Bold.ttf: fontcolor=white: fontsize=38 [title2], ";
             //Add Title Part 3 (Max the letters are 18)
-            $command5=$command5."[title2] drawtext=text='".strtoupper($data['title3'])."' - ".$split.": x=(w-text_w)/2:y=200 :  fontfile=OpenSans-Bold.ttf: fontcolor=white: fontsize=20 [title3], "; 
+            $command5=$command5."[title2] drawtext=text='".strtoupper($data['title3'])."' - ".$split.": x=(w-text_w)/2:y=300 :  fontfile=OpenSans-Bold.ttf: fontcolor=white: fontsize=20 [title3], "; 
             //Add sesson and episode number
             $command5=$command5.'[title3] drawtext=text='.' '.': x=(w-text_w)/2:y=1200 :  fontfile=OpenSans-Regular.ttf: fontcolor=violet: fontsize=10 [out]" ';
             //Scale the video
@@ -663,6 +663,55 @@ class VideoController extends Controller
             //$command5=$command5.'[episode] subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].' [subtitle] ,[subtitle][1:v] overlay=x=20:y=200 [out]" ';
             //Save the new video on out file
             $command5=$command5.'-map "[out]" -map 0:a   /usr/share/laravel-apps/cut-images2/storage/app/'.'lqclm-'.$split.'-'.$data['episode'].'.mp4';
+
+            //dd($command5);
+            system($command5);
+
+        }     
+
+        return view('welcome');
+    }
+
+
+
+    public function trailers(){
+        //El titilo no puede llevar tildes y debe ser cada parte menor a 18 letras incluidos los espacios
+        $video_splits=array
+        (           
+
+            "P1"	=>	array(	"start_time"	=>	'00:00:05'	,	"end_time"	=>	'00:02:16'	,"title1"	=>	'LA HABITACION'	,"title2"	=>	'EL AMOR NO CONOCE FRONTERAS'	,"title3"	=>	'THE ROOM'	,"file"	=>	'LA_HABITACION-Tráiler_HD_1080p.mp4'	,"episode"	=>	'TRAILER'	,"banner"	=>	'The-room_720.jpg'	,"subtitles"	=>	'LA_HABITACION-Tráiler_HD_1080p.srt'	,),
+
+        );
+         foreach($video_splits as $split=>$data)
+        {   
+            //remove preview video
+            system('rm  /usr/share/laravel-apps/cut-images2/storage/app/'.$split.'-'.$data['episode'].'.mp4');
+            
+            //Include video and image 
+            $command5='ffmpeg   -i /usr/share/laravel-apps/cut-images2/storage/app/'.$data['file'].' -i /usr/share/laravel-apps/cut-images2/storage/app/'.$data['banner'];
+            //cut the video between start_time and end_time -crf 9 (0-51) Calidad
+            $command5=$command5.' -ss '.$data['start_time'].' -to '.$data['end_time'].' -r 25 -ar 44100 -metadata title=  -filter_complex ';
+            //Pad video
+            $command5=$command5.'" [0:v]subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].':force_style='."'Alignment=2,,MarginL=5,MarginV=60,Fontsize=12'".' [subtitles],';
+            //$command5=$command5.'; [subtitles]pad=720:1280:(ow-iw)/2:(oh-ih)/2:black[padded]; ';
+            $command5=$command5.'[subtitles]crop=1080:1080,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:black[padded];';     
+            //Overlay the image   
+            //Overlay the image 
+            $command5=$command5.'[padded][1:v] overlay=(W-w)/2:1400 [image],';
+            //add title part1 (Max the letters are 18)
+            $command5=$command5."[image]drawtext=text='".strtoupper($data['title1'])."': x=(w-text_w)/2:y=170 :  fontfile=OpenSans-Bold.ttf: fontcolor=white: fontsize=70 [title1], ";
+            //Add title Part 2 (Max the letters are 18)
+            $command5=$command5."[title1] drawtext=text='".strtoupper($data['title2'])."': x=(w-text_w)/2:y=270 :  fontfile=OpenSans-Bold.ttf: fontcolor=white: fontsize=60 [title2], ";
+            //Add Title Part 3 (Max the letters are 18)
+            $command5=$command5."[title2] drawtext=text='".strtoupper($data['title3'])."'  : x=(w-text_w)/2:y=370 :  fontfile=OpenSans-Bold.ttf: fontcolor=white: fontsize=60 [title3], "; 
+            //Add sesson and episode number
+            $command5=$command5.'[title3] drawtext=text='.' '.': x=(w-text_w)/2:y=1200 :  fontfile=OpenSans-Regular.ttf: fontcolor=violet: fontsize=10 [out]" ';
+            //Scale the video
+            //$command5=$command5.'[title] scale=352:640 [out]" '; //,
+            //$command5=$command5.'subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].':force_style='."'Alignment=10,,MarginL=5,MarginV=50,Fontsize=4'".' [out]" ';
+            //$command5=$command5.'[episode] subtitles=/usr/share/laravel-apps/cut-images2/storage/app/'.$data['subtitles'].' [subtitle] ,[subtitle][1:v] overlay=x=20:y=200 [out]" ';
+            //Save the new video on out file
+            $command5=$command5.'-map "[out]" -map 0:a   /usr/share/laravel-apps/cut-images2/storage/app/'.$split.'-'.$data['episode'].'.mp4';
 
             //dd($command5);
             system($command5);
