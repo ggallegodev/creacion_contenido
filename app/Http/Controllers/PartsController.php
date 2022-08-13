@@ -17,6 +17,7 @@ class PartsController extends Controller
         //dd($num_parts);
 
         $newpart = new Part();
+       
         $newpart->id_episode=$request->get('episodes_in');
         $newpart->start_time=$request->get('input_starttime_part1');
         $newpart->end_time=$request->get('input_endtime_part1');

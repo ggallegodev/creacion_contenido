@@ -159,11 +159,20 @@
         $(document).ready(function(){    
             var nparts=0;
             var lastpart=0;
+            //Buttons Disabled
+            $("#btn_add_parts").prop('disabled', true);
+            $("#btn_remove_parts").prop('disabled', true);
+            $("btn_store_parts").prop('disabled', true);
             
             $("#tvshows_in").change(function(){                
                 var tvshow =$(this).val();
                 //alert('tvshow change');
                 console.log(tvshow);
+                //Buttons Disabled
+                $("#btn_add_parts").prop('disabled', true);
+                $("#btn_remove_parts").prop('disabled', true);
+                $("btn_store_parts").prop('disabled', true);
+                
                 $("#seasons_in").html('Seleccionar Temporada');
                 $("#episodes_in").html('Seleccinar Episodio');
                 $.get('SeasonsByTvshow/'+tvshow, function(data){
@@ -184,6 +193,12 @@
                 var tvshow =$(this).val();
                 //alert('tvshow focus');
                 console.log(tvshow);
+
+                //Buttons Disabled
+                $("#btn_add_parts").prop('disabled', true);
+                $("#btn_remove_parts").prop('disabled', true);
+                $("btn_store_parts").prop('disabled', true);
+
                 $("#seasons_in").html('Seleccionar Temporada');
                 $("#episodes_in").html('Seleccionar Episodio');
                 $.get('SeasonsByTvshow/'+tvshow, function(data){
@@ -205,6 +220,12 @@
                 var season =$(this).val();
                 //alert('season change');
                 console.log(season);
+
+                //Buttons Disabled
+                $("#btn_add_parts").prop('disabled', true);
+                $("#btn_remove_parts").prop('disabled', true);
+                $("btn_store_parts").prop('disabled', true);
+
                 $("#episodes_in").html('Seleccionar Episodio');
                 $.get('EpisodesBySeason/'+season, function(data){
                     console.log(data);
@@ -213,18 +234,49 @@
                     $("#episodes_in").append($('<option>', { 
                         value: data[i].id,
                         text : data[i].number+'-'+data[i].title 
+
                     }));                    
                                
                 }
-                
+
                 });
             });
+
+
+            $("#episodes_in").change(function(){   
+                var episode =$(this).val();
+                console.log('event change' + episode);
+                //Buttons Disabled                
+                $("#btn_add_parts").prop('disabled', false);
+                $("#btn_remove_parts").prop('disabled', false);
+                $("btn_store_parts").prop('disabled', false);  
+            });
+
+            $("#episodes_in").focus(function(){   
+                var episode =$(this).val();
+                console.log('event focus' + episode);
+                //Buttons Disabled            
+                if(episode>0)   
+                {
+                    $("#btn_add_parts").prop('disabled', false);
+                    $("#btn_remove_parts").prop('disabled', false);
+                    $("btn_store_parts").prop('disabled', false);
+                }  
+            });
+            
+            
 
 
             $("#seasons_in").focus(function(){                
                 var season =$(this).val();
                 //alert('season focus');
                 console.log(season);
+                
+                //Buttons Disabled
+                $("#btn_add_parts").prop('disabled', true);
+                $("#btn_remove_parts").prop('disabled', true);
+                $("btn_store_parts").prop('disabled', true);
+
                 $("#episodes_in").html('Seleccionar Episodio');
                 $.get('EpisodesBySeason/'+season, function(data){
                     console.log(data);
@@ -233,18 +285,21 @@
                     $("#episodes_in").append($('<option>', { 
                         value: data[i].id,
                         text : data[i].number+'-'+data[i].title 
+
                     }));                    
                                
                 }
-                
+
                 });
             });
+
+
 
             $("#btn_add_parts").click(function(){
                 var startime,endtime,diftime;
                 console.log(nparts);
                 //alert('btn add parts');
-                $('#panel-group-part'+lastpart).hide();
+                //$('#panel-group-part'+lastpart).hide();
 
                 nparts++;     
                 lastpart=nparts;
@@ -255,7 +310,7 @@
 
                     $("#form_parts").append('<div class="panel-heading" id="panel-group-part'+nparts+'">');
                     //Include Number Part to form
-                        $('#panel-group-part'+nparts).append(
+                        $('#panel-group-part'+nparts).append('<input type="hidden" name="input_part_number_'+nparts+'" id="input_part_number_'+nparts+ '"');
 
                     $('#panel-group-part'+nparts).append('<div class="panel-default my-3 p-3 bg-white rounded box-shadow border border-primary" id="panel-default'+nparts+'">');
                         //Header of Part
@@ -310,12 +365,16 @@
                                 console.log('endtime: '+ endtime[0]);
                                 console.log('dif_time: '+ dif_time);
                                 
-                                if(dif_time<40){       
+                                if((dif_time<40) || (dif_time>120)){   
+                                    $('#span_starttime'+nparts).html(' ');    
+                                    $('#span_endtime'+nparts).html(' ');          
                                     $('#span_starttime'+nparts).html(' .');                            
                                     $('#span_endtime'+nparts).html('Duración debe ser mayor 40 seg y menor a 2 min');  
+                                    console.log('IF');    
                                 }    
                                 else 
                                 {
+                                    console.log('ELSE');    
                                     $('#span_starttime'+nparts).html(' ');    
                                     $('#span_endtime'+nparts).html(' ');      
                                 }   
