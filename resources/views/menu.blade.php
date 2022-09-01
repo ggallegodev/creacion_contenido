@@ -124,6 +124,9 @@
                     </select>   
                     <br>
                     <br>
+
+                    <!--type="hidden"-->
+                    <input   value="0"  name="input_part" id="input_part">  
                     <button id="btn_store_parts" type="submit"> Guardar </button>
                     <!--<div class="col-12" id="parts_container"></div>-->
                     </form>
@@ -157,21 +160,31 @@
         
 
         $(document).ready(function(){    
-            var nparts=0;
+            var part=0;
             var lastpart=0;
+            var blurpart=0; 
+            var tvshow;
+            var season;
+            var episode;
+            var startime,endtime,diftime;
+
             //Buttons Disabled
             $("#btn_add_parts").prop('disabled', true);
             $("#btn_remove_parts").prop('disabled', true);
-            $("btn_store_parts").prop('disabled', true);
+            $("#btn_store_parts").prop('disabled', true);
             
             $("#tvshows_in").change(function(){                
-                var tvshow =$(this).val();
+                tvshow =$(this).val();
                 //alert('tvshow change');
                 console.log(tvshow);
                 //Buttons Disabled
                 $("#btn_add_parts").prop('disabled', true);
                 $("#btn_remove_parts").prop('disabled', true);
-                $("btn_store_parts").prop('disabled', true);
+                $("#btn_store_parts").prop('disabled', true);
+                
+                //delete all part panels
+                $("div[id*='panel-group-part']").remove();
+                $('#input_part').val(0);
                 
                 $("#seasons_in").html('Seleccionar Temporada');
                 $("#episodes_in").html('Seleccinar Episodio');
@@ -190,14 +203,17 @@
             });
 
             $("#tvshows_in").focus(function(){                
-                var tvshow =$(this).val();
+                tvshow =$(this).val();
                 //alert('tvshow focus');
                 console.log(tvshow);
 
                 //Buttons Disabled
                 $("#btn_add_parts").prop('disabled', true);
                 $("#btn_remove_parts").prop('disabled', true);
-                $("btn_store_parts").prop('disabled', true);
+                $("#btn_store_parts").prop('disabled', true);
+
+                //delete all part panels
+                //$("div[id*='panel-group-part']").remove();
 
                 $("#seasons_in").html('Seleccionar Temporada');
                 $("#episodes_in").html('Seleccionar Episodio');
@@ -217,14 +233,44 @@
 
 
             $("#seasons_in").change(function(){                
-                var season =$(this).val();
+                season =$(this).val();
                 //alert('season change');
                 console.log(season);
 
                 //Buttons Disabled
                 $("#btn_add_parts").prop('disabled', true);
                 $("#btn_remove_parts").prop('disabled', true);
-                $("btn_store_parts").prop('disabled', true);
+                $("#btn_store_parts").prop('disabled', true);
+
+                //delete all part panels
+                $("div[id*='panel-group-part']").remove();
+                $('#input_part').val(0);
+
+                $("#episodes_in").html('Seleccionar Episodio');
+                $.get('EpisodesBySeason/'+season, function(data){
+                    console.log(data);
+                for (var i=0; i<data.length;i++){
+                    console.log(data[i].title);
+                    $("#episodes_in").append($('<option>', { 
+                        value: data[i].id,
+                        text : data[i].number+'-'+data[i].title 
+                    }));                    
+                               
+                }
+
+                });
+            });
+
+            
+            $("#seasons_in").focus(function(){                
+                season =$(this).val();
+                //alert('season focus');
+                console.log(season);
+                
+                //Buttons Disabled
+                $("#btn_add_parts").prop('disabled', true);
+                $("#btn_remove_parts").prop('disabled', true);
+                $("#btn_store_parts").prop('disabled', true);
 
                 $("#episodes_in").html('Seleccionar Episodio');
                 $.get('EpisodesBySeason/'+season, function(data){
@@ -244,85 +290,120 @@
 
 
             $("#episodes_in").change(function(){   
-                var episode =$(this).val();
+                episode =$(this).val();
                 console.log('event change' + episode);
                 //Buttons Disabled                
                 $("#btn_add_parts").prop('disabled', false);
                 $("#btn_remove_parts").prop('disabled', false);
-                $("btn_store_parts").prop('disabled', false);  
+                $("#btn_store_parts").prop('disabled', false); 
+
+                //delete all part panels
+                $("div[id*='panel-group-part']").remove();
+                $('#input_part').val(0);
+
+                LoadParts(episode);
             });
 
             $("#episodes_in").focus(function(){   
-                var episode =$(this).val();
+                episode =$(this).val();
                 console.log('event focus' + episode);
                 //Buttons Disabled            
                 if(episode>0)   
                 {
                     $("#btn_add_parts").prop('disabled', false);
                     $("#btn_remove_parts").prop('disabled', false);
-                    $("btn_store_parts").prop('disabled', false);
+                    $("#btn_store_parts").prop('disabled', false);
+                    LoadParts(episode);
                 }  
-            });
+            });          
             
-            
-
-
-            $("#seasons_in").focus(function(){                
-                var season =$(this).val();
-                //alert('season focus');
-                console.log(season);
-                
-                //Buttons Disabled
-                $("#btn_add_parts").prop('disabled', true);
-                $("#btn_remove_parts").prop('disabled', true);
-                $("btn_store_parts").prop('disabled', true);
-
-                $("#episodes_in").html('Seleccionar Episodio');
-                $.get('EpisodesBySeason/'+season, function(data){
-                    console.log(data);
-                for (var i=0; i<data.length;i++){
-                    console.log(data[i].title);
-                    $("#episodes_in").append($('<option>', { 
-                        value: data[i].id,
-                        text : data[i].number+'-'+data[i].title 
-
-                    }));                    
-                               
-                }
-
-                });
-            });
-
-
 
             $("#btn_add_parts").click(function(){
-                var startime,endtime,diftime;
-                console.log(nparts);
+                
+                console.log('Current Part: '+part);
                 //alert('btn add parts');
                 //$('#panel-group-part'+lastpart).hide();
+                if ($('#input_starttime_part_'+part).val()=='' || $('#input_endtime_part_'+part).val()=='' || $('#input_title1_part_'+part).val()=='' || $('#input_title2_part_'+part).val()==''){
+                    console.log('Elementos Vacios');
+                    //part--; 
+                    $('#input_part').val(part);
+                }
+                else
+                {
+                    $.ajax({
+                        type: $('#form_parts').attr('method'), 
+                        url: $('#form_parts').attr('action'),
+                        data: $('#form_parts').serialize(),
+                        success: function (data) { console.log('Datos guardados parte '+ $('#input_part').val()) } 
+                    });
 
-                nparts++;     
-                lastpart=nparts;
-                
+                    part++;     
+                    lastpart=part;
+                    $('#input_part').val(part);
 
-                //Container of Part
-                //$("#parts_container").append('<div class="panel-group" id="panel-group-part'+nparts+'">');
+                    //Container of Part
+                    //$("#parts_container").append('<div class="panel-group" id="panel-group-part'+part+'">');
 
-                    $("#form_parts").append('<div class="panel-heading" id="panel-group-part'+nparts+'">');
-                    //Include Number Part to form
-                        $('#panel-group-part'+nparts).append('<input type="hidden" name="input_part_number_'+nparts+'" id="input_part_number_'+nparts+ '"');
+                    //CreatePart(part,'0:01:23','0:02:23','Titulo 1 de la parte', 'Titulo 2 de la parte');
+                    CreatePart(part,'','','','');
 
-                    $('#panel-group-part'+nparts).append('<div class="panel-default my-3 p-3 bg-white rounded box-shadow border border-primary" id="panel-default'+nparts+'">');
+                }//end else validation                     
+            });//else $("#btn_add_npartss").click(function()
+
+            
+            $("#btn_store_parts").on('click', function(){
+                console.log('OnClick Event '+part);
+                //window.location = "/cut-images2/public/parts/";    
+            });
+
+
+            $("#btn_remove_parts").click(function(){
+                //alert('btn remove parts');
+                console.log(lastpart);
+                if(lastpart>0){
+                    $('#panel-group-part'+lastpart).remove();
+                    part--;
+                    lastpart=part;
+                    $('#input_part').val(part);
+                }
+            });
+
+            $('#form_parts').submit(function (ev) {
+                $.ajax({
+                    type: $('#form_parts').attr('method'), 
+                    url: $('#form_parts').attr('action'),
+                    data: $('#form_parts').serialize(),
+                    success: function (data) { console.log('Datos guardados parte '+ $('#input_part').val()) } 
+                });
+            ev.preventDefault();
+            });
+
+            function CreatePart(part_in, starttime_in, endtime_in,title1_in,title2_in) {
+                console.log('function CreatePart '+part);
+
+                $("#form_parts").append('<div class="panel-heading" id="panel-group-part'+part_in+'">');
+                    //Include value of number part to form to save on database
+                    //type="hidden"
+                    $('#panel-group-part'+part_in).append('<input  value="'+part_in+'"  name="input_npart_'+part_in+'" id="input_npart_'+part_in+'">');  
+                    
+                    //Include Number Part to form  
+                    $('#panel-group-part'+part_in).append('<div class="panel-default my-3 p-3 bg-white rounded box-shadow border border-primary" id="panel-default'+part_in+'">');
+   
+
                         //Header of Part
-                        $('#panel-default'+nparts).append('<div class="panel-heading"> '+'Parte '+nparts+'</div>');
+                        $('#panel-default'+part_in).append('<div class="panel-heading"> '+'Parte '+part_in+'</div>');
+
+                        
                         //Content of Part
-                        $('#panel-default'+nparts).append('<div class="row panel-body " id="panel-body'+nparts +'">');
+                        
+                        $('#panel-default'+part_in).append('<div class="row panel-body " id="panel-body'+part_in +'">');
                             //Input StartTime
-                            $('#panel-body'+nparts).append('<div class="col input-group bootstrap-timepicker timepicker" id="col_starttime_part'+nparts+'">');                         
-                            $('#col_starttime_part'+nparts).append('<label class="form-label" for=input_starttime_part'+nparts+'> Inicio:  </label>');
-                            $('#col_starttime_part'+nparts).append('<input style="width: 100%;"  class="form-control input-small" placeholder="0:00:00" type="text" name="input_starttime_part'+nparts+'" '+'id="input_starttime_part'+nparts+'">');
-                            $('#col_starttime_part'+nparts).append('<span class="input-group-addon" id="span_starttime'+nparts+'">  </span>');
-                            //$('#span_starttime'+nparts).append('<i class="glyphicon glyphicon-time"></i>');
+                            $('#panel-body'+part_in).append('<div class="col input-group bootstrap-timepicker timepicker" id="col_starttime_part'+part_in+'">'); 
+                                       
+                            $('#col_starttime_part'+part_in).append('<label class="form-label" for=input_starttime_part'+part_in+'> Inicio:  </label>');
+                            $('#col_starttime_part'+part_in).append('<input style="width: 100%;"  class="form-control input-small" placeholder="0:00:00" type="text" value="'+starttime_in+ '" name="input_starttime_part_'+part_in+'" '+'id="input_starttime_part_'+part_in+'">');
+                            $('#col_starttime_part'+part_in).append('<span class="input-group-addon" id="span_starttime'+part_in+'">  </span>');
+                            //$('#span_starttime'+part).append('<i class="glyphicon glyphicon-time"></i>');
                             $("input[name*='input_starttime']").timepicker({
                                 minuteStep: 1,
                                 template: 'modal',
@@ -333,11 +414,11 @@
                             });
 
                             //Input Endtime
-                            $('#panel-body'+nparts).append('<div class="col input-group bootstrap-timepicker timepicker" id="col_endtime_part'+nparts+'">');
-                            $('#col_endtime_part'+nparts).append('<label class="form-label" for=input_endtime_part'+nparts+'> Fin:  </label>');
-                            $('#col_endtime_part'+nparts).append('<input style="width: 100%;" class="form-control input-small" placeholder="0:00:00" type="text" name="input_endtime_part'+nparts+'" '+' id="input_endtime_part'+nparts+'" >');
-                            $('#col_endtime_part'+nparts).append('<span style="color:red"; class="input-group-addon" id="span_endtime'+nparts+'">  </span>');
-                            //$('#span_endtime'+nparts).append('<i class="glyphicon glyphicon-time id="image'+nparts+'"></i>');
+                            $('#panel-body'+part_in).append('<div class="col input-group bootstrap-timepicker timepicker" id="col_endtime_part'+part_in+'">');
+                            $('#col_endtime_part'+part_in).append('<label class="form-label" for=input_endtime_part'+part_in+'> Fin:  </label>');
+                            $('#col_endtime_part'+part_in).append('<input style="width: 100%;" class="form-control input-small" placeholder="0:00:00" type="text" value="'+endtime_in+'"name="input_endtime_part_'+part_in+'" '+' id="input_endtime_part_'+part_in+'" >');
+                            $('#col_endtime_part'+part_in).append('<span style="color:red"; class="input-group-addon" id="span_endtime'+part_in+'">  </span>');
+                            //$('#span_endtime'+part).append('<i class="glyphicon glyphicon-time id="image'+part+'"></i>');
                             $("input[name*='input_endtime']").timepicker({
                                 minuteStep: 1,
                                 template: 'modal',
@@ -347,10 +428,13 @@
                                 defaultTime: false
                             });
                             
+                            
+
                             $("input[name*='input_endtime']").change(function(){ 
 
                                 let regExTime = /([0-9]?[0-9]):([0-9][0-9]):([0-9][0-9])/;
-                                let starttime = regExTime.exec($("input[name*='input_starttime']").val());
+                                let starttime_element='input_starttime_part_'+part_in;
+                                let starttime = regExTime.exec($("input[name*='"+starttime_element+"']").val());
                                 let endtime = regExTime.exec(this.value);
 
                               
@@ -366,52 +450,86 @@
                                 console.log('dif_time: '+ dif_time);
                                 
                                 if((dif_time<40) || (dif_time>120)){   
-                                    $('#span_starttime'+nparts).html(' ');    
-                                    $('#span_endtime'+nparts).html(' ');          
-                                    $('#span_starttime'+nparts).html(' .');                            
-                                    $('#span_endtime'+nparts).html('Duración debe ser mayor 40 seg y menor a 2 min');  
+                                    $('#span_starttime'+part_in).html(' ');    
+                                    $('#span_endtime'+part_in).html(' ');          
+                                    $('#span_starttime'+part_in).html(' .');                            
+                                    $('#span_endtime'+part_in).html('Duración debe ser mayor 40 seg y menor a 2 min');  
                                     console.log('IF');    
                                 }    
                                 else 
                                 {
                                     console.log('ELSE');    
-                                    $('#span_starttime'+nparts).html(' ');    
-                                    $('#span_endtime'+nparts).html(' ');      
+                                    $('#span_starttime'+part_in).html(' ');    
+                                    $('#span_endtime'+part_in).html(' ');      
                                 }   
+                            
+                                
+
+                            });
 
 
-                            })
+                            $('#panel-default'+part_in).append('<div class="row panel-body " id="panel-body-2'+part_in +'">');
+                            //Input Title 1
+                            $('#panel-body-2'+part_in).append('<div class="col" id="col_title1_part'+part_in+'">'); 
+                            $('#col_title1_part'+part_in).append('<label class="form-label" for=input_title1_part'+part_in+'> Titulo 1  </label>');
+                            $('#col_title1_part'+part_in).append('<input class="form-control" type="text" value="'+title1_in+ '" minlength="5" maxlength="25" id="input_title1_part_'+part_in+'" name="input_title1_part_'+part_in+'">'); 
 
-                            $('#panel-default'+nparts).append('<div class="row panel-body " id="panel-body-2'+nparts +'">');
-                                //Input Title 1
-                                $('#panel-body-2'+nparts).append('<div class="col" id="col_title1_part'+nparts+'">'); 
-                                $('#col_title1_part'+nparts).append('<label class="form-label" for=input_title1_part'+nparts+'> Titulo 1  </label>');
-                                $('#col_title1_part'+nparts).append('<input class="form-control" type="text" minlength="5" maxlength="25" name="input_title1_part'+nparts+'">'); 
+                            //Input Title 2
+                            $('#panel-body-2'+part_in).append('<div class="col" id="col_title2_part'+part_in+'">'); 
+                            $('#col_title2_part'+part_in).append('<label class="form-label" for=input_title2_part'+part_in+'> Titulo 2  </label>');
+                            $('#col_title2_part'+part_in).append('<input class="form-control" type="text"  value="'+title2_in+ '"maxlength="25"3 id="input_title2_part_'+part_in + '" name="input_title2_part_'+part_in+'">'); 
+       
+                            
+                            $("input[name*='input_']").blur(function(){     
+                                var element;                            
+                                console.log('Blur Input: '+this.id);
+                                element=this.id;
+                                element_array=element.split('_');
+                                console.log('Element Blured '+ element_array[3]);
+                                if(element_array[3]){
+                                    blurpart=element_array[3];
+                                }
 
-                                //Input Title 2
-                                $('#panel-body-2'+nparts).append('<div class="col" id="col_title2_part'+nparts+'">'); 
-                                $('#col_title2_part'+nparts).append('<label class="form-label" for=input_title2_part'+nparts+'> Titulo 2  </label>');
-                                $('#col_title2_part'+nparts).append('<input class="form-control" type="text"  maxlength="25"3 name="input_title2_part'+nparts+'">'); 
+                            });   
 
-            
+                            $("input[name*='input_']").focus(function(){ 
+                                var element;
+                                console.log('Focus Input: '+this.id);
+                                element=this.id;
+                                element_array=element.split('_');
+                                console.log('Element Focused '+ element_array[3]);
+                                if(element_array[3]){                                    
+                                    $('#input_part').val(element_array[3]);
+                                    console.log('Element Hide '+ blurpart);
+                                    if(element_array[3]!=blurpart){
+                                        $('#panel-group-part'+blurpart+' *').prop('disabled', true);
+                                    }
+                                }
+                            });   
 
-            });
+                            $("input[name*='input_title2']").blur(function(){ 
+                                console.log('Focus Input Title2: '+this.id);
+                                $.ajax({
+                                    type: $('#form_parts').attr('method'), 
+                                    url: $('#form_parts').attr('action'),
+                                    data: $('#form_parts').serialize(),
+                                    success: function (data) { console.log('Datos guardados parte '+ $('#input_part').val()) } 
+                                });
+                            }); 
+            };
 
-            
-
-
-
-            $("#btn_remove_parts").click(function(){
-                //alert('btn remove parts');
-                console.log(lastpart);
-                if(lastpart>0){
-                    $('#panel-group-part'+lastpart).remove();
-                    nparts--;
-                    lastpart=nparts;
-                }
-            });
-
-
+            function LoadParts (episode_in)
+            {
+                $.get('PartsByEpisode/'+episode_in, function(data){
+                    console.log(data);
+                    for (var i=0; i<data.length;i++){
+                        console.log(data[i].title);
+                        CreatePart(data[i].part_number,data[i].start_time,data[i].end_time,data[i].title1,data[i].title2);   
+                        $('#input_part').val(data[i].part_number);         
+                               
+                    }
+                });
+            };
 
         });
         </script>

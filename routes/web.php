@@ -37,7 +37,12 @@ Route::get('SeasonsByTvshow/{id}',[SeasonsController::class, 'byTvshow']);
 
 Route::get('EpisodesBySeason/{id}',[EpisodesController::class, 'bySeason']);
 
-Route::post('parts',[PartsController::class, 'store']);
+Route::get('PartsByEpisode/{id}',[PartsController::class, 'byEpisode']);
+
+Route::post('parts/',[PartsController::class, 'store'])->name('parts.store');
+
+
+
 
 
 Auth::routes();
